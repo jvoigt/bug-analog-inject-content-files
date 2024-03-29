@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {injectContent, MarkdownComponent} from "@analogjs/content";
+import {injectContent, injectContentFiles, MarkdownComponent} from "@analogjs/content";
 import {AsyncPipe} from "@angular/common";
 
 @Component({
@@ -8,7 +8,9 @@ import {AsyncPipe} from "@angular/common";
   imports: [AsyncPipe, MarkdownComponent],
   template: `
     <h1>injectContentFiles type is broken</h1>
-
+    @if (myContentFiles[0]; as myContentFile) {
+      <analog-markdown [content]="myContentFile.content"></analog-markdown>
+    }
     <hr/>
     <h1>injectContent works</h1>
     @if (myContent$ | async; as myContent) {
@@ -19,5 +21,9 @@ import {AsyncPipe} from "@angular/common";
 export default class HomeComponent {
   readonly myContent$ = injectContent({
     customFilename: 'one'
+  });
+
+  readonly myContentFiles = injectContentFiles((file)=> {
+    return file.slug == 'one'
   });
 }
